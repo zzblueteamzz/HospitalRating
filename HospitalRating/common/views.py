@@ -15,7 +15,7 @@ def index(request):
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
-            all_doctors = all_doctors.filter(tagged_patient__name__icontains=search_form.cleaned_data['pet_name'])
+            all_doctors = all_doctors.filter(tagged_patient__name__icontains=search_form.cleaned_data['patient_name'])
 
     context = {
         'all_doctors': all_doctors,

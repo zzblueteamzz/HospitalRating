@@ -55,7 +55,7 @@ class UserDetailsView(generic.DetailView):
         context['is_owner'] = self.request.user == self.object
 
         # very important about queries...fast operation !single query from db filtered
-        doctors = self.object.doctor_set.prefetch_related('like_set')
+        doctors = self.object.Doctor.prefetch_related('like_set')
 
         context['patient_count'] = self.object.patients_set.count()
         context['doctors_count'] = doctors.count()
