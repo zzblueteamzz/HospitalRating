@@ -10,4 +10,4 @@ class DoctorAdmin(admin.ModelAdmin):
 
     @staticmethod
     def get_tagged_patient(obj):
-        return ', '.join([doctor.name for doctor in obj.tagged_patient.all()])
+        return ', '.join([doctor.first_name for doctor in obj.tagged_patient.all()])

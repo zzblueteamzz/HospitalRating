@@ -4,16 +4,16 @@ from django.shortcuts import render, redirect
 from HospitalRating.common.forms import CommentForm
 from HospitalRating.core.find_patient import get_patient_by_name_and_username
 from HospitalRating.core.is_owner import is_owner
-from HospitalRating.patients.forms import PetEditForm, PetCreateForm, PetDeleteForm
+from HospitalRating.patients.forms import PatientEditForm, PatientCreateForm, PatientDeleteForm
 
 
 @login_required
 # pets/views.py
 def add_patient(request):
     if request.method == "GET":
-        form = PetCreateForm()
+        form = PatientCreateForm()
     else:
-        form = PetCreateForm(request.POST)
+        form = PatientCreateForm(request.POST)
         if form.is_valid():
             pet = form.save(commit=False)
             pet.user = request.user
@@ -38,7 +38,7 @@ def show_patient_details(request, username, patient_slug):
     comment_form = CommentForm()
 
     context = {
-        'pet': patient,
+        'patient': patient,
         'all_photos': all_photos,
         'comment_form': comment_form,
         'username': username,
@@ -56,7 +56,7 @@ def show_patient_details(request, username, patient_slug):
 
 # http://127.0.0.1:8000/pets/goto/pet/pesho-5/
 
-def edit_pet(request, username, patient_slug):
+def edit_patient(request, username, patient_slug):
     patient = get_patient_by_name_and_username(patient_slug, username)
 
     if not is_owner(request, patient):
@@ -83,12 +83,12 @@ def edit_pet(request, username, patient_slug):
     )
 
 
-def delete_pet(request, username, patient_slug):
-    patient = get_patient_by_name_and_username(patient_slug, username)
+def delete_patient(request, username, patient_id):
+    patient = get_patient_by_name_and_username(patient_id, username)
     profile = patient.user
 
     if request.method == 'GET':
-        form = PetDeleteForm(instance=patient)
+        form = PatientDeleteForm(instance=patient)
     else:
         form = PetDeleteForm(request.POST, instance=patient)
         if form.is_valid():
@@ -97,8 +97,8 @@ def delete_pet(request, username, patient_slug):
 
     context = {
         'form': form,
-        'pet': patient,
-        'pet_slug': patient_slug,
+        'patient': patient,
+        'patient_id': patient_id,
         'username': username,
     }
 

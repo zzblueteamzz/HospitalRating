@@ -8,7 +8,6 @@ from HospitalRating.core.doctor_utils import find_doctor_by_pk
 from HospitalRating.doctors.forms import DoctorCreateForm, DoctorEditForm, DoctorDeleteForm
 
 
-# photos/views.py
 def add_doctor(request):
     if request.method == 'GET':
         form = ()

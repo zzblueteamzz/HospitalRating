@@ -32,8 +32,8 @@ class DoctorDeleteForm(DisabledFormMixin, DoctorBaseForm):
             self.instance.tagged_pets.clear()  # many-to-many
 
             Doctor.objects.all().first().tagged_pets.clear()
-            Like.objects.filter(to_photo_id=self.instance.id).delete()  # one-to-many
-            Comment.objects.filter(to_photo_id=self.instance.id).delete()  # one-to-many
+            Like.objects.filter(to_doctors_id=self.instance.id).delete()  # one-to-many
+            Comment.objects.filter(to_doctors_id=self.instance.id).delete()  # one-to-many
 
             self.instance.delete()
 

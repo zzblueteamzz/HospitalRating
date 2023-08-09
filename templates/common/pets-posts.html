@@ -1,11 +1,11 @@
 {% load static %}
-{% for photo in all_photos %}
+{% for doctor in all_doctors %}
 
     <div class="card" style="background-color: #e5efd4;border-radius: 12px;border:2px solid black;font-size: 46px;
 box-shadow: 0px 0px 12px 1px #7c7a7a;">
         <div class="top">
             <div class="userDetails">
-                <a href="{% url 'profile details' pk=photo.user.pk %}">
+                <a href="{% url 'profile details' pk=doctor.user.pk %}">
                     <div class="profilepic">
                         <div class="profile_img">
                             <div class="image">
@@ -17,35 +17,30 @@ box-shadow: 0px 0px 12px 1px #7c7a7a;">
                 </a>
                 <h3>
 
-                    <a href="{% url 'profile details' pk=photo.user.pk %}">
-                        {% if photo.user.get_full_name %}
-                            {{ photo.user.get_full_name }}
+                    <a href="{% url 'profile details' pk=doctor.user.pk %}">
+                        {% if doctor.user.get_full_name %}
+                            {{ dorctor.user.get_full_name }}
                         {% else %}
-                            {{ photo.user.username }}
+                            {{ doctor.user.username }}
                         {% endif %}
                     </a>
 
                     <br>
-
-                    {% if photo.location %}
-                        <span>{{ photo.location }}</span>
-                    {% endif %}
-
                 </h3>
             </div>
         </div>
 
-        <div class="imgBx" id="photo-{{ photo.id }}">
-            <img src="{{ photo.photo.url }}" alt="photo url" class="cover">
+        <div class="imgBx" id="doctor-{{ doctor.id }}">
+            <img src="{{ doctor.photo.url}}" alt="photo url" class="cover">
         </div>
 
         <div class="bottom">
             <div class="actionBtns">
                 <div class="left">
                     <span class="heart">
-									<a href="{% url 'like' photo.id %}">
+									<a href="{% url 'like' doctor.id %}">
 										<!-- if user has liked the photo -->
-                                        {% if photo.like_set.all %}
+                                        {% if doctor.like_set.all %}
                                             <svg style="color: red"
                                                  xmlns="http://www.w3.org/2000/svg"
                                                  width="24"
@@ -90,7 +85,7 @@ box-shadow: 0px 0px 12px 1px #7c7a7a;">
 								</a>
 								</span>
 
-                    <a href="{% url 'share' photo.id %}">
+                    <a href="{% url 'share' doctor.id %}">
                         <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
                              height="24" role="img" viewBox="0 0 48 48" width="24">
                             <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3
@@ -105,7 +100,7 @@ box-shadow: 0px 0px 12px 1px #7c7a7a;">
 
                 </div>
             </div>
-            <p class="likes">{{ photo.like_set.count }} Likes</p>
+            <p class="likes">{{ doctor.like_set.count }} Likes</p>
 
             {% for doctor in doctor.tagged_patients.all %}
                 <a href="{% url 'show pet details' username=doctor.user.username pet_slug=pet.slug %}">
@@ -125,7 +120,7 @@ box-shadow: 0px 0px 12px 1px #7c7a7a;">
                 </a>
             {% endif %}
 
-            <h5 class="postTime">{{ photo.date_of_publication }}</h5>
+            <h5 class="postTime">{{ doctor.date_of_discharge }}</h5>
 
             <div class="addComments">
                 <div class="reaction">
@@ -134,13 +129,14 @@ box-shadow: 0px 0px 12px 1px #7c7a7a;">
                     </h3>
                 </div>
 
-                <form method="post" action="{% url 'add comment' photo.id %}">
+                <form method="post" action="{% url 'comment' doctor.id %}">
 
                     {{ comment_form }}
                     {% csrf_token %}
 
                     <button type="submit" id="post-button">POST</button>
                 </form>
+
 
             </div>
         </div>

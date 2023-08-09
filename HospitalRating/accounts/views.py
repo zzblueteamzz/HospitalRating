@@ -1,8 +1,3 @@
-from django.shortcuts import render
-
-from django.shortcuts import render
-
-# Create your views here.
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.contrib.auth import views as auth_views, get_user_model, login
@@ -53,9 +48,9 @@ class UserDetailsView(generic.DetailView):
         context = super().get_context_data(**kwargs)
 
         context['is_owner'] = self.request.user == self.object
-
+        #doctors = self.object.doctor_set.all()
         # very important about queries...fast operation !single query from db filtered
-        doctors = self.object.Doctor.prefetch_related('like_set')
+        doctors = self.object.doctor_set.prefetch_related('like_set')
 
         context['patient_count'] = self.object.patients_set.count()
         context['doctors_count'] = doctors.count()
@@ -83,7 +78,7 @@ class UserEditView(generic.UpdateView):
 class UserDeleteView(generic.DeleteView):
     template_name = 'accounts/profile-delete-page.html'
     model = UserModel
-    success_url = reverse_lazy('show index')
+    success_url = reverse_lazy('index')
 
 
 def to_github(request):

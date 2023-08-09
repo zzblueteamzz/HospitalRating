@@ -1,5 +1,7 @@
+import pyperclip
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from HospitalRating.patients.models import Patients
 from .forms import CommentForm, SearchForm
@@ -29,49 +31,51 @@ def index(request):
         context,
     )
 
-@login_required
-def like_functionality(request, photo_id):
-    photo = Patients.objects.get(pk=photo_id)
 
-    kwargs = {
-        'to_photo': photo,
-        'user': request.user
-    }
+def like_functionality(request, doctor_id):
+    doctor = Doctor.objects.get(id=doctor_id)
+    liked_object = Like.objects.filter(to_doctor=doctor_id, user_id=request.user.pk)
 
-    like_object = Like.objects \
-        .filter(**kwargs) \
-        .first()
-
-    if like_object:
-        like_object.delete()
+    if liked_object:
+        liked_object.delete()
     else:
-        new_like_object = Like(**kwargs)
-        new_like_object.save()
+        Like.objects.create(
+            to_doctor=doctor,
+            user_id=request.user.pk,
+        )
 
-    # http://127.0.0.1:8000/
-    return redirect(request.META['HTTP_REFERER'] + f"#{photo_id}")
+    return redirect(request.META['HTTP_REFERER'] + f'#{doctor_id}')
+
+def get_photo_url(request, doctor_id):
+    return request.META['HTTP_REFERER'] + f'#photo-{doctor_id}'
+
+
+def share_functionality(request, doctor_id):
+    photo_details_url = reverse('show_doctor_details', kwargs={
+        'pk': doctor_id
+    })
+    pyperclip.copy(photo_details_url)
+    return redirect(get_photo_url(request, doctor_id))
 
 
 @login_required
-def share_functionality(request, photo_id):
-    # copy(request.META['HTTP_HOST'] + resolve_url('photo details', photo_id))
-
-    return redirect(request.META['HTTP_REFERER'] + f"#{photo_id}")
-
-
-@login_required
-def comment_functionality(request, photo_id):
-    photo = Patients.objects.get(pk=photo_id)
-
+def comment_functionality(request, doctor_id):
     if request.method == 'POST':
+        doctor = Doctor.objects.filter(pk=doctor_id).get()
+
         form = CommentForm(request.POST)
+
         if form.is_valid():
-            print('form is valid')
+            comment = form.save(commit=False)
+            comment.to_doctors = doctor
+            comment.user = request.user
+            comment.save()
 
-            new_comment_instance = form.save(commit=False)
-            new_comment_instance.to_photo = photo
-            new_comment_instance.save()
-
-        return redirect(request.META['HTTP_REFERER'] + f"#{photo_id}")
+        return redirect(
+            request.META['HTTP_REFERER'] + f'#{doctor_id}'
+        )
 
 
+
+def redirect_to_index(request):
+    return redirect('index')

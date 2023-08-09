@@ -1,4 +1,3 @@
-from django.db import models
 
 from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
@@ -13,7 +12,6 @@ UserModel = get_user_model()
 class Doctor(models.Model):
     DOCTOR_DESCRIPTION_MAX_LEN = 300
     DOCTOR_DESCRIPTION_MIN_LEN = 10
-
 
     photo = models.ImageField(
         upload_to='images',
@@ -30,7 +28,6 @@ class Doctor(models.Model):
         blank=True,
         null=True,
     )
-
 
     tagged_patient = models.ManyToManyField(
         Patients,

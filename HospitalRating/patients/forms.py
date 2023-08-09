@@ -8,7 +8,7 @@ from HospitalRating.patients.models import Patients
 # - `ModelForm` binds to models
 # - `Form` is detached from models
 
-class PetBaseForm(forms.ModelForm):
+class PatientBaseForm(forms.ModelForm):
     class Meta:
         model = Patients
         # fields = '__all__' (not the case, we want to skip `slug`
@@ -47,11 +47,11 @@ class PetBaseForm(forms.ModelForm):
         }
 
 
-class PetCreateForm(PetBaseForm):
+class PatientCreateForm(PatientBaseForm):
     pass
 
 
-class PetEditForm(DisabledFormMixin, PetBaseForm):
+class PatientEditForm(DisabledFormMixin, PatientBaseForm):
     disabled_fields = ('name',)
 
     def __init__(self, *args, **kwargs):
@@ -59,7 +59,7 @@ class PetEditForm(DisabledFormMixin, PetBaseForm):
         self._disable_fields()
 
 
-class PetDeleteForm(DisabledFormMixin, PetBaseForm):
+class PatientDeleteForm(DisabledFormMixin, PatientBaseForm):
     disabled_fields = ('name', 'date_of_birth', 'personal_photo')
 
     def __init__(self, *args, **kwargs):
