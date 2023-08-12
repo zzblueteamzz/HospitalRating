@@ -83,5 +83,5 @@ class UserDeleteView(generic.DeleteView):
 
 def to_github(request):
     return HttpResponseRedirect(
-        "https://github.com/GeorgiLukanov87/PythonWeb-Django-Framework/tree/main/petstagram"
+
     )
