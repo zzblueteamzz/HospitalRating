@@ -2,18 +2,25 @@
 {% block content %}
 
     <main>
+
+        <!-- Starts Edit Photo Section -->
         <div class="edit-delete edit-photo">
-            <h2>Edit Pet</h2>
-            <form method="post" action="{% url 'edit_patient' pk=patient.pk %}">
-                <p>
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                </p>
-                <button class="edit-btn" type="submit">Edit</button>
+            <h2>Edit doctor</h2>
+
+            <!-- Starts Edit Photo Form -->
+            <form method="post">
+                {{ form.as_p}}
+                {% csrf_token %}
+
+                <!-- Edit Photo Button -->
+                <button class="edit-btn" type="submit">Edit Doctor</button>
             </form>
+            <!-- End Edit Photo Form -->
 
         </div>
+        <!-- End Edit Photo Section -->
 
     </main>
 
 {% endblock %}
+

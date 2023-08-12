@@ -11,25 +11,19 @@ from HospitalRating.patients.models import Patients
 class PatientBaseForm(forms.ModelForm):
     class Meta:
         model = Patients
-        # fields = '__all__' (not the case, we want to skip `slug`
-        fields = ('first_name', 'last_name', 'date_of_birth', 'diagnosis')
-        # exclude = ('slug',)
+        fields = '__all__'
+        #fields = ('name', 'date_of_birth', 'diagnosis', 'personal_photo')
+        exclude = ('slug',)
         labels = {
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
+            'name': 'Name of Patient',
             'personal_photo': 'Link to Image',
             'date_of_birth': 'Date of Birth',
             'diagnosis': 'Diagnosis',
         }
         widgets = {
-            'first_name': forms.TextInput(
+            'name': forms.TextInput(
                 attrs={
-                    'placeholder': 'Pet firstname'
-                }
-            ),
-            'last_name': forms.TextInput(
-                attrs={
-                    'placeholder': 'Patient lastname'
+                    'placeholder': 'Patient name'
                 }
             ),
             'date_of_birth': forms.DateInput(
@@ -43,7 +37,11 @@ class PatientBaseForm(forms.ModelForm):
                     'placeholder': 'Patient diagnosis'
                 }
             ),
-
+            'personal_photo': forms.URLInput(
+                attrs={
+                    'placeholder': 'Link to image',
+                }
+            )
         }
 
 
@@ -60,7 +58,7 @@ class PatientEditForm(DisabledFormMixin, PatientBaseForm):
 
 
 class PatientDeleteForm(DisabledFormMixin, PatientBaseForm):
-    disabled_fields = ('name', 'date_of_birth', 'personal_photo')
+    disabled_fields = ('name', 'date_of_birth', 'diagnosis', 'personal_photo')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

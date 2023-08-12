@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.core.files.uploadedfile import UploadedFile
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -10,11 +10,12 @@ from HospitalRating.doctors.forms import DoctorCreateForm, DoctorEditForm, Docto
 
 def add_doctor(request):
     if request.method == 'GET':
-        form = ()
+        form = DoctorCreateForm()
     else:
         form = DoctorCreateForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            uploaded_file=UploadedFile(photo=request.FILES['photo'])
+            uploaded_file.save()
             return redirect('index')
 
     context = {

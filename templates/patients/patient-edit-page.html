@@ -3,8 +3,8 @@
 
     <main>
         <div class="edit-delete edit-photo">
-            <h2>Edit Pet</h2>
-            <form method="post" action="{% url 'edit pet' username=username pet_slug=pet_slug %}">
+            <h2>Edit Patient</h2>
+            <form method="post" action="{% url 'edit pet' username=username patient_slug=patient_slug %}">
                 <p>
                     {{ form.as_p }}
                     {% csrf_token %}

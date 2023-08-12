@@ -5,7 +5,8 @@
             <h2>Add Doctor</h2>
 
             <!-- Start Add Pet Form -->
-            <form class="add-pet-form" method="post" action="{% url 'add_doctor' %}">
+
+            <form class="add-pet-form" method="post" action="{% url 'add_doctor' %}" enctype="multipart/form-data">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <!-- Add Pet Button -->
@@ -16,3 +17,4 @@
         <!-- End Add Pet Section -->
 
 {% endblock %}
+

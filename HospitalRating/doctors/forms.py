@@ -29,9 +29,9 @@ class DoctorDeleteForm(DisabledFormMixin, DoctorBaseForm):
 
     def save(self, commit=True):
         if commit:
-            self.instance.tagged_pets.clear()  # many-to-many
+            self.instance.tagged_patient.clear()  # many-to-many
 
-            Doctor.objects.all().first().tagged_pets.clear()
+            Doctor.objects.all().first().tagged_patient.clear()
             Like.objects.filter(to_doctors_id=self.instance.id).delete()  # one-to-many
             Comment.objects.filter(to_doctors_id=self.instance.id).delete()  # one-to-many
 

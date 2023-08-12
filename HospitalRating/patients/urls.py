@@ -7,9 +7,9 @@ from HospitalRating.patients.views import add_patient, show_patient_details, edi
 
 urlpatterns = (
     path('add/', add_patient, name='add_patient'),
-    path('<str:username>/patient/<int:pk>/', include(
+    path('<str:username>/patient/<slug:patient_slug>/', include(
         [
-            path('', show_patient_details, name='show pet details'),
+            path('', show_patient_details, name='show_patient_details'),
             path('edit/', edit_patient, name='edit_patient'),
             path('delete/', delete_patient, name='delete_patient'),
         ]

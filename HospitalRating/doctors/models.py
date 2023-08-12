@@ -13,7 +13,7 @@ class Doctor(models.Model):
     DOCTOR_DESCRIPTION_MAX_LEN = 300
     DOCTOR_DESCRIPTION_MIN_LEN = 10
 
-    photo = models.ImageField(
+    photo = models.FileField(
         upload_to='images',
         validators=(
             validate_file_size_5mb,

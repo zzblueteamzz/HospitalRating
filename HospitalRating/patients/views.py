@@ -42,7 +42,7 @@ def show_patient_details(request, username, patient_slug):
         'all_photos': all_photos,
         'comment_form': comment_form,
         'username': username,
-        'pet_slug': patient_slug,
+        'patient_slug': patient_slug,
         'is_owner': patient.user == request.user,
 
     }
@@ -54,27 +54,25 @@ def show_patient_details(request, username, patient_slug):
     )
 
 
-# http://127.0.0.1:8000/pets/goto/pet/pesho-5/
-
 def edit_patient(request, username, patient_slug):
     patient = get_patient_by_name_and_username(patient_slug, username)
 
     if not is_owner(request, patient):
-        return redirect('show pet details', username=username, pet_slug=patient_slug)
+        return redirect('show_patient_details', username=username, patient_slug=patient_slug)
 
     if request.method == 'GET':
-        form = PetEditForm(instance=patient)
+        form = PatientEditForm(instance=patient)
     else:
-        form = PetEditForm(request.POST, instance=patient)
+        form = PatientEditForm(request.POST, instance=patient)
         if form.is_valid():
             form.save()
-            return redirect('show pet details', username=username, pet_slug=patient_slug)
+            return redirect('show_patient_details', username=username, patient_slug=patient_slug)
 
     context = {
         'form': form,
-        'pet': patient,
+        'patient': patient,
         'username': username,
-        'pet_slug': patient_slug,
+        'patient_slug': patient_slug,
     }
     return render(
         request,
@@ -83,14 +81,14 @@ def edit_patient(request, username, patient_slug):
     )
 
 
-def delete_patient(request, username, patient_id):
-    patient = get_patient_by_name_and_username(patient_id, username)
+def delete_patient(request, username, patient_slug):
+    patient = get_patient_by_name_and_username(patient_slug, username)
     profile = patient.user
 
     if request.method == 'GET':
         form = PatientDeleteForm(instance=patient)
     else:
-        form = PetDeleteForm(request.POST, instance=patient)
+        form = PatientDeleteForm(request.POST, instance=patient)
         if form.is_valid():
             form.save()
             return redirect('profile details', pk=profile.pk)
@@ -98,7 +96,7 @@ def delete_patient(request, username, patient_id):
     context = {
         'form': form,
         'patient': patient,
-        'patient_id': patient_id,
+        'patient_slug': patient_slug,
         'username': username,
     }
 
@@ -107,4 +105,6 @@ def delete_patient(request, username, patient_id):
         'patients/patient-delete-page.html',
         context,
     )
+
+
 

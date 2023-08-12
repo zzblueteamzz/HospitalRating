@@ -6,7 +6,7 @@ from HospitalRating.doctors.models import Doctor
 
 @admin.register(Doctor)
 class DoctorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date_of_discharge', 'description', 'get_tagged_patient')
+    list_display = ('id', 'date_of_discharge', 'description',)
 
     @staticmethod
     def get_tagged_patient(obj):
